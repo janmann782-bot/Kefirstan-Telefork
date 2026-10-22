@@ -1,4 +1,4 @@
-name: Import AyuGram source
+name: Import exteraGram source
 on:
   push:
     branches: [main]
@@ -16,13 +16,13 @@ jobs:
         run: |
           set -euo pipefail
           if test -f TMessagesProj/build.gradle; then
-            echo "AyuGram baseline is already present"
+            echo "exteraGram baseline is already present"
             exit 0
           fi
-          git remote add upstream https://github.com/AyuGram/AyuGram4A.git
-          git fetch --depth=1 upstream 7013145676d36d82ee13c02a89f72097b7490dcd
-          git checkout FETCH_HEAD -- .
+          git remote add upstream https://github.com/exteraSquad/exteraGram.git
+          git fetch --depth=1 upstream 6f78031aafd7f27e0dfaa31a207715569a6df1a2
+          git checkout FETCH_HEAD -- . ':!.github/workflows'
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Import AyuGram4A 7013145676d36d82ee13c02a89f72097b7490dcd (GPL-2.0 source snapshot)"
+          git commit -m "Import exteraGram 6f78031aafd7f27e0dfaa31a207715569a6df1a2 (GPL-2.0 source snapshot)"
           git push origin HEAD:main
