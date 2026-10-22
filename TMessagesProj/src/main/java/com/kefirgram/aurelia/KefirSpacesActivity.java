@@ -214,11 +214,30 @@ public class KefirSpacesActivity extends BaseFragment implements NotificationCen
         MessagesController.DialogFilter filter = selectedFilterId == 0 ? null : controller.dialogFiltersById.get(selectedFilterId);
         actionBar.setSubtitle(filter == null ? LocaleController.getString(R.string.KefirAllChats) : filter.name);
         dialogs.clear();
-        ArrayList<TLRPC.Dialog> source = filter == null ? controller.getDialogs(0) : filter.dialogs;
+        ArrayList<TLRPC.Dialog> source = filter == null ? controller.getDialogs(0) : controller.getAllDialogs();
         String needle = query.trim().toLowerCase(Locale.ROOT);
         for (TLRPC.Dialog dialog : source) {
             if (dialog instanceof TLRPC.TL_dialogFolder) continue;
+            if (filter != null) {
+                long peerId = dialog.id;
+                if (DialogObject.isEncryptedDialog(peerId)) {
+                    TLRPC.EncryptedChat secret = controller.getEncryptedChat(DialogObject.getEncryptedChatId(peerId));
+                    if (secret == null) continue;
+                    peerId = secret.user_id;
+                }
+                if (!filter.includesDialog(getAccountInstance(), peerId, dialog)) continue;
+            }
             if (needle.isEmpty() || title(dialog.id).toLowerCase(Locale.ROOT).contains(needle)) dialogs.add(dialog);
+        }
+        if (filter != null) {
+            // Stable sort retains Telegram's date order for unpinned dialogs.
+            java.util.Collections.sort(dialogs, (left, right) -> {
+                int l = filter.pinnedDialogs.indexOfKey(left.id);
+                int r = filter.pinnedDialogs.indexOfKey(right.id);
+                int lp = l < 0 ? Integer.MAX_VALUE : filter.pinnedDialogs.valueAt(l);
+                int rp = r < 0 ? Integer.MAX_VALUE : filter.pinnedDialogs.valueAt(r);
+                return Integer.compare(lp, rp);
+            });
         }
         empty.setVisibility(dialogs.isEmpty() ? View.VISIBLE : View.GONE);
         empty.setText(LocaleController.getString(needle.isEmpty() ? R.string.KefirSpaceEmpty : R.string.KefirNoChatsFound));
