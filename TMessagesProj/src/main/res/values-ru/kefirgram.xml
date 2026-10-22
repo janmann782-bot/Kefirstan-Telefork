@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="KefirAppearance">Внешний вид</string>
+    <string name="KefirApplyTheme">Применить темную тему KefirGram</string>
+    <string name="KefirAureliaPosting">Аурелия-постинг</string>
+    <string name="KefirFormatPost">Оформить аурельский пост</string>
+    <string name="KefirPostingHelp">Нажми А рядом с полем сообщения: даты станут подчеркнутыми, имена - жирными. Удерживай А для изменения словаря. Сообщение отправляется только кнопкой отправки.</string>
+    <string name="KefirNamesHelp">Одно имя или вариант написания на строку. Падежные формы добавляй отдельными строками. Выделяются только имена из списка; пустой список отключает выделение имен.</string>
+    <string name="KefirSaveNames">Сохранить словарь</string>
+    <string name="KefirNamesSaved">Словарь сохранен</string>
+    <string name="KefirResetNames">Загрузить исходные имена в редактор</string>
+</resources>

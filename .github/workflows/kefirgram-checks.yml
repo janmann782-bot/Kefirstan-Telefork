@@ -1,0 +1,27 @@
+name: KefirGram checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  aurelia-rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Check dates, dictionary, UTF-16 offsets and protected text
+        run: bash tools/test-aurelia.sh
+      - name: Validate added resources
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          for path in Path('TMessagesProj/src/main/res').glob('values*/kefirgram.xml'):
+              ET.parse(path)
+          ET.parse('TMessagesProj/src/main/res/drawable/kefirgram_foreground.xml')
+          print('KefirGram resources: valid XML')
+          PY

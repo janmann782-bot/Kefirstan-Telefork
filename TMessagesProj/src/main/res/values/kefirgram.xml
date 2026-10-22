@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="kefirgram_background">#19191C</color>
+    <string name="KefirAppearance">Appearance</string>
+    <string name="KefirApplyTheme">Apply KefirGram dark theme</string>
+    <string name="KefirAureliaPosting">Aurelia posting</string>
+    <string name="KefirFormatPost">Format Aurelia post</string>
+    <string name="KefirPostingHelp">Tap A beside the message field to underline dates and bold names in your draft. Hold A to edit the dictionary. The message is only sent when you tap Send.</string>
+    <string name="KefirNamesHelp">One name or spelling per line. Add inflected forms on separate lines. Only listed names are matched; an empty list disables name formatting.</string>
+    <string name="KefirSaveNames">Save dictionary</string>
+    <string name="KefirNamesSaved">Dictionary saved</string>
+    <string name="KefirResetNames">Load default names into editor</string>
+</resources>

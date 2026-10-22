@@ -41,7 +41,7 @@ public class LauncherIconController {
     }
 
     public enum LauncherIcon {
-        DEFAULT("DefaultIcon", BuildVars.isBetaApp() ? R.mipmap.ic_background_beta : R.color.ic_background, BuildVars.isBetaApp() ? R.mipmap.ic_foreground_beta : R.drawable.ic_foreground, R.string.AppIconDefault),
+        DEFAULT("DefaultIcon", BuildVars.isBetaApp() ? R.mipmap.ic_background_beta : R.color.kefirgram_background, BuildVars.isBetaApp() ? R.mipmap.ic_foreground_beta : R.drawable.kefirgram_foreground, R.string.AppIconDefault),
         MONET("MonetIcon", R.color.ic_background_monet, R.drawable.ic_foreground_monet, R.string.AppIconMonet, Build.VERSION.SDK_INT < 31 || Build.VERSION.SDK_INT > 32),
         GRADIENT("GradientIcon", R.mipmap.ic_background_gradient, R.drawable.ic_foreground_white, R.string.AppIconGradient),
         AURORA("AuroraIcon", R.mipmap.ic_background_aurora, R.drawable.ic_foreground_white, R.string.AppIconAurora),
