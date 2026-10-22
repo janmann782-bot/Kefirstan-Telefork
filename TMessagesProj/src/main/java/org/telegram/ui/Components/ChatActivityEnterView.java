@@ -104,8 +104,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.exteragram.messenger.ExteraConfig;
 import com.exteragram.messenger.components.ChatActivityEnterViewStaticIconView;
 import com.exteragram.messenger.components.TranslateBeforeSendWrapper;
-import com.exteragram.messenger.boost.BoostController;
-import com.exteragram.messenger.boost.encryption.EncryptionHelper;
 import com.exteragram.messenger.utils.ChatUtils;
 import com.exteragram.messenger.utils.PopupUtils;
 import com.exteragram.messenger.utils.TranslatorUtils;
@@ -3545,29 +3543,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             });
             sendPopupLayout.addView(aureliaAction, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
 
-            if (BoostController.isUserBooster()) {
-                ActionBarMenuSubItem encryptButton = new ActionBarMenuSubItem(getContext(), false, !scheduleButtonValue && !sendWithoutSoundButtonValue, resourcesProvider);
-                encryptButton.setTextAndIcon(LocaleController.getString(R.string.Encrypt), R.drawable.msg_secret);
-                encryptButton.setMinimumWidth(AndroidUtilities.dp(196));
-                encryptButton.setItemHeight(56);
-                encryptButton.setSubtext(EncryptionHelper.getEncryptorBy(dialog_id).getName());
-                encryptButton.setRightIcon(R.drawable.msg_arrowright);
-                encryptButton.getRightIcon().setVisibility(VISIBLE);
-                encryptButton.getRightIcon().setOnClickListener(v -> PopupUtils.showDialog(EncryptionHelper.names, LocaleController.getString(R.string.Encryptors), EncryptionHelper.getEncryptorTypeFor(dialog_id), getContext(), i -> {
-                    EncryptionHelper.setEncryptorTypeFor(dialog_id, i);
-                    encryptButton.setSubtext(EncryptionHelper.getEncryptorBy(dialog_id).getName());
-                }));
-                encryptButton.setOnClickListener(v -> {
-                    if (sendPopupWindow != null && sendPopupWindow.isShowing()) {
-                        sendPopupWindow.dismiss();
-                    }
-                    EncryptionHelper.encryptMessage(String.valueOf(getEditField().getText()), dialog_id, EncryptionHelper.getEncryptorTypeFor(dialog_id), message -> {
-                        getEditField().setText(message);
-                        sendMessage();
-                    });
-                });
-                sendPopupLayout.addView(encryptButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
-            }
             if (scheduleButtonValue) {
                 ActionBarMenuSubItem scheduleButton = new ActionBarMenuSubItem(getContext(), true, !sendWithoutSoundButtonValue, resourcesProvider);
                 if (self) {
@@ -5630,9 +5605,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         if (editingMessageObject == null || editingMessageObject.type != MessageObject.TYPE_EMOJIS) {
             text = AndroidUtilities.getTrimmedString(text);
         }
-        if (text != null && (editingMessageObject.originalText != null || editingMessageObject.isDecrypted)) {
-            text = EncryptionHelper.encryptMessage(text.toString(), dialog_id, editingMessageObject.currentEncryptor);
-        }
         CharSequence[] message = new CharSequence[]{text};
         ArrayList<TLRPC.MessageEntity> entities = MediaDataController.getInstance(currentAccount).getEntities(message, supportsSendingNewEntities());
         if (!TextUtils.equals(message[0], editingMessageObject.messageText) || entities != null && !entities.isEmpty() || !editingMessageObject.messageOwner.entities.isEmpty() || editingMessageObject.messageOwner.media instanceof TLRPC.TL_messageMediaWebPage) {
@@ -7305,9 +7277,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             } else {
                 currentLimit = accountInstance.getMessagesController().maxMessageLength;
                 editingText = editingMessageObject.messageText;
-            }
-            if (EncryptionHelper.isEncrypted(editingMessageObject, null)) {
-                editingText = ChatUtils.getMessageText(EncryptionHelper.decryptMessage(editingMessageObject), null);
             }
             if (editingText != null) {
                 final Paint.FontMetricsInt fontMetricsInt;

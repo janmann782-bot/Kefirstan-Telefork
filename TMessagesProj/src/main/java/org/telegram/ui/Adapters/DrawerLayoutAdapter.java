@@ -329,6 +329,7 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
         if (ExteraConfig.savedMessages) items.add(new Item(11, LocaleController.getString("SavedMessages", R.string.SavedMessages), savedIcon));
         items.add(new Item(8, LocaleController.getString("Settings", R.string.Settings), settingsIcon));
         items.add(new Item(com.kefirgram.aurelia.AureliaConfig.DRAWER_SETTINGS, "KefirGram", settingsIcon));
+        items.add(new Item(com.kefirgram.aurelia.AureliaConfig.DRAWER_SPACES, LocaleController.getString(R.string.KefirSpaces), R.drawable.msg_groups));
         if (ExteraConfig.scanQr) {
             items.add(null);
             items.add(new Item(16, LocaleController.getString("AuthAnotherClient", R.string.AuthAnotherClient), scanQrIcon));

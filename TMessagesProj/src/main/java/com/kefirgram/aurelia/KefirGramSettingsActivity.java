@@ -42,6 +42,23 @@ public class KefirGramSettingsActivity extends BaseFragment {
         fragmentView = scroll;
 
         addText(context, content, R.string.KefirAppearance, 20);
+        TextView discord = addText(context, content, AureliaConfig.isDiscordEnabled()
+                ? R.string.KefirDiscordEnabled : R.string.KefirDiscordDisabled, 16);
+        discord.setMinHeight(AndroidUtilities.dp(56));
+        discord.setGravity(Gravity.CENTER_VERTICAL);
+        discord.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText));
+        discord.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector)));
+        discord.setOnClickListener(v -> {
+            AureliaConfig.setDiscordEnabled(!AureliaConfig.isDiscordEnabled());
+            if (parentLayout != null) parentLayout.rebuildAllFragmentViews(false, false);
+        });
+        addText(context, content, R.string.KefirDiscordHelp, 15);
+        TextView spaces = addText(context, content, R.string.KefirSpaces, 16);
+        spaces.setMinHeight(AndroidUtilities.dp(56));
+        spaces.setGravity(Gravity.CENTER_VERTICAL);
+        spaces.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText));
+        spaces.setBackground(Theme.createSelectorDrawable(Theme.getColor(Theme.key_listSelector)));
+        spaces.setOnClickListener(v -> presentFragment(new KefirSpacesActivity()));
         TextView theme = addText(context, content, R.string.KefirApplyTheme, 16);
         theme.setMinHeight(AndroidUtilities.dp(56));
         theme.setGravity(Gravity.CENTER_VERTICAL);

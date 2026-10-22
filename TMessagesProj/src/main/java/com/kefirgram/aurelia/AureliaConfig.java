@@ -13,6 +13,8 @@ import java.util.Arrays;
 
 public final class AureliaConfig {
     public static final int DRAWER_SETTINGS = 21062;
+    public static final int DRAWER_SPACES = 21063;
+    private static Boolean discordEnabled;
     private static String defaultNames;
     private static String cachedNames;
     private static AureliaTextRules cachedRules;
@@ -21,6 +23,16 @@ public final class AureliaConfig {
 
     private static SharedPreferences preferences() {
         return ApplicationLoader.applicationContext.getSharedPreferences("kefirgram", Context.MODE_PRIVATE);
+    }
+
+    public static boolean isDiscordEnabled() {
+        if (discordEnabled == null) discordEnabled = preferences().getBoolean("discordLayout", true);
+        return discordEnabled;
+    }
+
+    public static void setDiscordEnabled(boolean enabled) {
+        discordEnabled = enabled;
+        preferences().edit().putBoolean("discordLayout", enabled).apply();
     }
 
     public static String getDefaultNames() {

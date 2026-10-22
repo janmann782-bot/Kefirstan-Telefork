@@ -4534,7 +4534,7 @@ public class Theme {
         try {
             final ThemeInfo themeDarkBlue = themesDict.get("Dark Blue");
 
-            String theme = preferences.getString("theme", null);
+            String theme = preferences.getString("theme", "KefirGram");
             if ("Default".equals(theme)) {
                 applyingTheme = themesDict.get("Blue");
                 applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;

@@ -9,4 +9,13 @@
     <string name="KefirSaveNames">Сохранить словарь</string>
     <string name="KefirNamesSaved">Словарь сохранен</string>
     <string name="KefirResetNames">Загрузить исходные имена в редактор</string>
+    <string name="KefirDiscordEnabled">Discord-лента: включена</string>
+    <string name="KefirDiscordDisabled">Discord-лента: выключена</string>
+    <string name="KefirDiscordHelp">Обычные текстовые сообщения идут слева без пузырей. Аватар, имя, время и статус отправки находятся сверху. Медиа, ответы и пересылки пока используют штатный вид.</string>
+    <string name="KefirSpaces">Пространства</string>
+    <string name="KefirAllChats">Все чаты</string>
+    <string name="KefirFindChat">Найти чат по названию</string>
+    <string name="KefirManageSpaces">Настроить пространства (папки Telegram)</string>
+    <string name="KefirSpaceEmpty">Здесь пока нет чатов. Нажми + слева, чтобы настроить папки Telegram.</string>
+    <string name="KefirNoChatsFound">Чаты с таким названием не найдены</string>
 </resources>

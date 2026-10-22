@@ -1,12 +1,7 @@
 name: Android Java compile
 on:
-  push:
-    branches: [kefirgram/extera-foundation]
-    paths:
-      - 'TMessagesProj/**'
-      - '*.gradle'
-      - '.github/workflows/android-compile.yml'
   pull_request:
+    paths: ['TMessagesProj/**', '*.gradle', '.github/workflows/android-compile.yml']
   workflow_dispatch:
 permissions:
   contents: read

@@ -10,4 +10,13 @@
     <string name="KefirSaveNames">Save dictionary</string>
     <string name="KefirNamesSaved">Dictionary saved</string>
     <string name="KefirResetNames">Load default names into editor</string>
+    <string name="KefirDiscordEnabled">Discord feed: on</string>
+    <string name="KefirDiscordDisabled">Discord feed: off</string>
+    <string name="KefirDiscordHelp">Plain text messages are left-aligned without bubbles. Avatar, name, time and send status appear at the top. Media, replies and forwards currently keep their native layout.</string>
+    <string name="KefirSpaces">Spaces</string>
+    <string name="KefirAllChats">All chats</string>
+    <string name="KefirFindChat">Find a chat by name</string>
+    <string name="KefirManageSpaces">Manage spaces (Telegram folders)</string>
+    <string name="KefirSpaceEmpty">No chats here yet. Tap + on the left to manage Telegram folders.</string>
+    <string name="KefirNoChatsFound">No chats match this name</string>
 </resources>
