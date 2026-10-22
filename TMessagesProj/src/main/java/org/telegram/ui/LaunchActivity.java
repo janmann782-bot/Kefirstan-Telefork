@@ -614,6 +614,12 @@ public class LaunchActivity extends BasePermissionsActivity implements INavigati
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 15) {
                     showSelectStatusDialog();
+                } else if (id == com.kefirgram.aurelia.AureliaConfig.DRAWER_SPACES) {
+                    presentFragment(new com.kefirgram.aurelia.KefirSpacesActivity());
+                    drawerLayoutContainer.closeDrawer(false);
+                } else if (id == com.kefirgram.aurelia.AureliaConfig.DRAWER_SETTINGS) {
+                    presentFragment(new com.kefirgram.aurelia.KefirGramSettingsActivity());
+                    drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 16) {
                     if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);

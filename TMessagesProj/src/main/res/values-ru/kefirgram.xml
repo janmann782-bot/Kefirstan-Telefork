@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="KefirAppearance">Внешний вид</string>
+    <string name="KefirApplyTheme">Применить темную тему KefirGram</string>
+    <string name="KefirAureliaPosting">Аурелия-постинг</string>
+    <string name="KefirFormatPost">Оформить аурельский пост</string>
+    <string name="KefirPostingHelp">Нажми А рядом с полем сообщения: даты станут подчеркнутыми, имена - жирными. Удерживай А для изменения словаря. Сообщение отправляется только кнопкой отправки.</string>
+    <string name="KefirNamesHelp">Одно имя или вариант написания на строку. Падежные формы добавляй отдельными строками. Выделяются только имена из списка; пустой список отключает выделение имен.</string>
+    <string name="KefirSaveNames">Сохранить словарь</string>
+    <string name="KefirNamesSaved">Словарь сохранен</string>
+    <string name="KefirResetNames">Загрузить исходные имена в редактор</string>
+    <string name="KefirDiscordEnabled">Discord-лента: включена</string>
+    <string name="KefirDiscordDisabled">Discord-лента: выключена</string>
+    <string name="KefirDiscordHelp">Обычные текстовые сообщения идут слева без пузырей. Аватар, имя, время и статус отправки находятся сверху. Медиа, ответы и пересылки пока используют штатный вид.</string>
+    <string name="KefirSpaces">Пространства</string>
+    <string name="KefirAllChats">Все чаты</string>
+    <string name="KefirFindChat">Найти чат по названию</string>
+    <string name="KefirManageSpaces">Настроить пространства (папки Telegram)</string>
+    <string name="KefirSpaceEmpty">Здесь пока нет чатов. Нажми + слева, чтобы настроить папки Telegram.</string>
+    <string name="KefirNoChatsFound">Чаты с таким названием не найдены</string>
+</resources>

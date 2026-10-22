@@ -2366,7 +2366,7 @@ public class Theme {
             if (isDark != UNKNOWN) {
                 return isDark == DARK;
             }
-            if ("Dark Blue".equals(name) || "Night".equals(name) || "Monet Dark".equals(name)) {
+            if ("KefirGram".equals(name) || "Dark Blue".equals(name) || "Night".equals(name) || "Monet Dark".equals(name)) {
                 isDark = DARK;
             } else if ("Blue".equals(name) || "Arctic Blue".equals(name) || "Day".equals(name) || "Monet Light".equals(name)) {
                 isDark = LIGHT;
@@ -4452,6 +4452,16 @@ public class Theme {
         themes.add(themeInfo);
         themesDict.put("Night", themeInfo);
 
+        themeInfo = new ThemeInfo();
+        themeInfo.name = "KefirGram";
+        themeInfo.assetName = "kefirgram.attheme";
+        themeInfo.previewBackgroundColor = 0xff09090b;
+        themeInfo.previewInColor = 0xff19191c;
+        themeInfo.previewOutColor = 0xff253329;
+        themeInfo.sortIndex = 5;
+        themes.add(themeInfo);
+        themesDict.put("KefirGram", themeInfo);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             themeInfo = new ThemeInfo();
             themeInfo.name = "Monet Light";
@@ -4524,7 +4534,7 @@ public class Theme {
         try {
             final ThemeInfo themeDarkBlue = themesDict.get("Dark Blue");
 
-            String theme = preferences.getString("theme", null);
+            String theme = preferences.getString("theme", "KefirGram");
             if ("Default".equals(theme)) {
                 applyingTheme = themesDict.get("Blue");
                 applyingTheme.currentAccentId = DEFALT_THEME_ACCENT_ID;

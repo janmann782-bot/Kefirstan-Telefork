@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="kefirgram_background">#19191C</color>
+    <string name="KefirAppearance">Appearance</string>
+    <string name="KefirApplyTheme">Apply KefirGram dark theme</string>
+    <string name="KefirAureliaPosting">Aurelia posting</string>
+    <string name="KefirFormatPost">Format Aurelia post</string>
+    <string name="KefirPostingHelp">Tap A beside the message field to underline dates and bold names in your draft. Hold A to edit the dictionary. The message is only sent when you tap Send.</string>
+    <string name="KefirNamesHelp">One name or spelling per line. Add inflected forms on separate lines. Only listed names are matched; an empty list disables name formatting.</string>
+    <string name="KefirSaveNames">Save dictionary</string>
+    <string name="KefirNamesSaved">Dictionary saved</string>
+    <string name="KefirResetNames">Load default names into editor</string>
+    <string name="KefirDiscordEnabled">Discord feed: on</string>
+    <string name="KefirDiscordDisabled">Discord feed: off</string>
+    <string name="KefirDiscordHelp">Plain text messages are left-aligned without bubbles. Avatar, name, time and send status appear at the top. Media, replies and forwards currently keep their native layout.</string>
+    <string name="KefirSpaces">Spaces</string>
+    <string name="KefirAllChats">All chats</string>
+    <string name="KefirFindChat">Find a chat by name</string>
+    <string name="KefirManageSpaces">Manage spaces (Telegram folders)</string>
+    <string name="KefirSpaceEmpty">No chats here yet. Tap + on the left to manage Telegram folders.</string>
+    <string name="KefirNoChatsFound">No chats match this name</string>
+</resources>

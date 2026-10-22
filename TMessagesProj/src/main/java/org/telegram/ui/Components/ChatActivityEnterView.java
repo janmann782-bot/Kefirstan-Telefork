@@ -104,8 +104,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.exteragram.messenger.ExteraConfig;
 import com.exteragram.messenger.components.ChatActivityEnterViewStaticIconView;
 import com.exteragram.messenger.components.TranslateBeforeSendWrapper;
-import com.exteragram.messenger.boost.BoostController;
-import com.exteragram.messenger.boost.encryption.EncryptionHelper;
 import com.exteragram.messenger.utils.ChatUtils;
 import com.exteragram.messenger.utils.PopupUtils;
 import com.exteragram.messenger.utils.TranslatorUtils;
@@ -455,6 +453,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     private RecordDot recordDot;
     private SizeNotifierFrameLayout sizeNotifierLayout;
     private int originalViewHeight;
+    private TextView aureliaButton;
     private LinearLayout attachLayout;
     private ImageView attachButton;
     @Nullable
@@ -1886,7 +1885,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
                 super.onLayout(changed, left, top, right, bottom);
                 if (scheduledButton != null) {
-                    int x = getMeasuredWidth() - AndroidUtilities.dp(botButton != null && botButton.getVisibility() == VISIBLE ? 96 : 48) - AndroidUtilities.dp(48);
+                    int x = getMeasuredWidth() - (aureliaButton == null ? 0 : AndroidUtilities.dp(48)) - AndroidUtilities.dp(botButton != null && botButton.getVisibility() == VISIBLE ? 96 : 48) - AndroidUtilities.dp(48);
                     scheduledButton.layout(x, scheduledButton.getTop(), x + scheduledButton.getMeasuredWidth(), scheduledButton.getBottom());
                 }
                 if (!animationParamsX.isEmpty()) {
@@ -1998,7 +1997,23 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             attachLayout.setEnabled(false);
             attachLayout.setPivotX(AndroidUtilities.dp(48));
             attachLayout.setClipChildren(false);
-            messageEditTextContainer.addView(attachLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 48, Gravity.BOTTOM | Gravity.RIGHT));
+            messageEditTextContainer.addView(attachLayout, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, 48, Gravity.BOTTOM | Gravity.RIGHT, 0, 0, 48, 0));
+
+            aureliaButton = new TextView(context);
+            aureliaButton.setText("А");
+            aureliaButton.setTextSize(19);
+            aureliaButton.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
+            aureliaButton.setGravity(Gravity.CENTER);
+            aureliaButton.setTextColor(getThemedColor(Theme.key_chat_messagePanelSend));
+            aureliaButton.setContentDescription(LocaleController.getString(R.string.KefirFormatPost));
+            aureliaButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)));
+            messageEditTextContainer.addView(aureliaButton, LayoutHelper.createFrame(48, 48, Gravity.BOTTOM | Gravity.RIGHT));
+            aureliaButton.setOnClickListener(v -> formatAureliaDraft());
+            aureliaButton.setOnLongClickListener(v -> {
+                if (parentFragment == null) return false;
+                parentFragment.presentFragment(new com.kefirgram.aurelia.KefirGramSettingsActivity());
+                return true;
+            });
 
             notifyButton = new ImageView(context);
             notifySilentDrawable = new CrossOutDrawable(context, R.drawable.input_notify_on, Theme.key_chat_messagePanelIcons);
@@ -3460,6 +3475,17 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         return false;
     }
 
+    private void formatAureliaDraft() {
+        if (messageEditText == null || messageEditText.length() == 0) return;
+        int start = messageEditText.getSelectionStart();
+        int end = messageEditText.getSelectionEnd();
+        CharSequence formatted = com.kefirgram.aurelia.AureliaDraftFormatter.format(messageEditText.getText());
+        setFieldText(formatted, false);
+        if (start >= 0 && end >= 0) {
+            messageEditText.setSelection(Math.min(start, messageEditText.length()), Math.min(end, messageEditText.length()));
+        }
+    }
+
     private boolean onSendLongClick(View view) {
         if (isInScheduleMode()) {
             return false;
@@ -3509,29 +3535,14 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             };
             sendPopupLayout.addView(translateButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
 
-            if (BoostController.isUserBooster()) {
-                ActionBarMenuSubItem encryptButton = new ActionBarMenuSubItem(getContext(), false, !scheduleButtonValue && !sendWithoutSoundButtonValue, resourcesProvider);
-                encryptButton.setTextAndIcon(LocaleController.getString(R.string.Encrypt), R.drawable.msg_secret);
-                encryptButton.setMinimumWidth(AndroidUtilities.dp(196));
-                encryptButton.setItemHeight(56);
-                encryptButton.setSubtext(EncryptionHelper.getEncryptorBy(dialog_id).getName());
-                encryptButton.setRightIcon(R.drawable.msg_arrowright);
-                encryptButton.getRightIcon().setVisibility(VISIBLE);
-                encryptButton.getRightIcon().setOnClickListener(v -> PopupUtils.showDialog(EncryptionHelper.names, LocaleController.getString(R.string.Encryptors), EncryptionHelper.getEncryptorTypeFor(dialog_id), getContext(), i -> {
-                    EncryptionHelper.setEncryptorTypeFor(dialog_id, i);
-                    encryptButton.setSubtext(EncryptionHelper.getEncryptorBy(dialog_id).getName());
-                }));
-                encryptButton.setOnClickListener(v -> {
-                    if (sendPopupWindow != null && sendPopupWindow.isShowing()) {
-                        sendPopupWindow.dismiss();
-                    }
-                    EncryptionHelper.encryptMessage(String.valueOf(getEditField().getText()), dialog_id, EncryptionHelper.getEncryptorTypeFor(dialog_id), message -> {
-                        getEditField().setText(message);
-                        sendMessage();
-                    });
-                });
-                sendPopupLayout.addView(encryptButton, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
-            }
+            ActionBarMenuSubItem aureliaAction = new ActionBarMenuSubItem(getContext(), false, false, resourcesProvider);
+            aureliaAction.setTextAndIcon(LocaleController.getString(R.string.KefirFormatPost), R.drawable.msg_edit);
+            aureliaAction.setOnClickListener(v -> {
+                if (sendPopupWindow != null) sendPopupWindow.dismiss();
+                formatAureliaDraft();
+            });
+            sendPopupLayout.addView(aureliaAction, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 48));
+
             if (scheduleButtonValue) {
                 ActionBarMenuSubItem scheduleButton = new ActionBarMenuSubItem(getContext(), true, !sendWithoutSoundButtonValue, resourcesProvider);
                 if (self) {
@@ -4069,7 +4080,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         messageEditText.setHintTextColor(getThemedColor(Theme.key_chat_messagePanelHint));
         messageEditText.setCursorColor(getThemedColor(Theme.key_chat_messagePanelCursor));
         messageEditText.setHandlesColor(getThemedColor(Theme.key_chat_TextSelectionCursor));
-        messageEditTextContainer.addView(messageEditText, 1, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 52, 0, isChat ? 50 : 2, 1.5f));
+        messageEditTextContainer.addView(messageEditText, 1, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.BOTTOM, 52, 0, isChat ? 98 : 2, 1.5f));
         messageEditText.setOnKeyListener(new OnKeyListener() {
 
             boolean ctrlPressed = false;
@@ -5594,9 +5605,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         if (editingMessageObject == null || editingMessageObject.type != MessageObject.TYPE_EMOJIS) {
             text = AndroidUtilities.getTrimmedString(text);
         }
-        if (text != null && (editingMessageObject.originalText != null || editingMessageObject.isDecrypted)) {
-            text = EncryptionHelper.encryptMessage(text.toString(), dialog_id, editingMessageObject.currentEncryptor);
-        }
         CharSequence[] message = new CharSequence[]{text};
         ArrayList<TLRPC.MessageEntity> entities = MediaDataController.getInstance(currentAccount).getEntities(message, supportsSendingNewEntities());
         if (!TextUtils.equals(message[0], editingMessageObject.messageText) || entities != null && !entities.isEmpty() || !editingMessageObject.messageOwner.entities.isEmpty() || editingMessageObject.messageOwner.media instanceof TLRPC.TL_messageMediaWebPage) {
@@ -6435,6 +6443,8 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
         }
         FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) messageEditText.getLayoutParams();
         int oldRightMargin = layoutParams.rightMargin;
+        int aureliaWidth = aureliaButton == null ? 0 : AndroidUtilities.dp(48);
+        layoutParams.rightMargin -= aureliaWidth;
         if (attachVisible == 1) {
             if (botButton != null && botButton.getVisibility() == VISIBLE && scheduledButton != null && scheduledButton.getVisibility() == VISIBLE && attachLayout != null && attachLayout.getVisibility() == VISIBLE) {
                 layoutParams.rightMargin = AndroidUtilities.dp(146);
@@ -6460,6 +6470,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 layoutParams.rightMargin = AndroidUtilities.dp(2);
             }
         }
+        layoutParams.rightMargin += aureliaWidth;
         if (oldRightMargin != layoutParams.rightMargin) {
             messageEditText.setLayoutParams(layoutParams);
         }
@@ -7267,9 +7278,6 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
                 currentLimit = accountInstance.getMessagesController().maxMessageLength;
                 editingText = editingMessageObject.messageText;
             }
-            if (EncryptionHelper.isEncrypted(editingMessageObject, null)) {
-                editingText = ChatUtils.getMessageText(EncryptionHelper.decryptMessage(editingMessageObject), null);
-            }
             if (editingText != null) {
                 final Paint.FontMetricsInt fontMetricsInt;
                 Paint paint = null;
@@ -7376,7 +7384,7 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
             openKeyboard();
             if (messageEditText != null) {
                 FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) messageEditText.getLayoutParams();
-                layoutParams.rightMargin = AndroidUtilities.dp(4);
+                layoutParams.rightMargin = AndroidUtilities.dp(aureliaButton == null ? 4 : 52);
                 messageEditText.setLayoutParams(layoutParams);
             }
             sendButton.setVisibility(GONE);
@@ -7495,6 +7503,10 @@ public class ChatActivityEnterView extends BlurredFrameLayout implements Notific
     }
 
     public void updateColors() {
+        if (aureliaButton != null) {
+            aureliaButton.setTextColor(getThemedColor(Theme.key_chat_messagePanelSend));
+            aureliaButton.setBackground(Theme.createSelectorDrawable(getThemedColor(Theme.key_listSelector)));
+        }
         if (sendPopupLayout != null) {
             for (int a = 0, count = sendPopupLayout.getChildCount(); a < count; a++) {
                 final View view = sendPopupLayout.getChildAt(a);

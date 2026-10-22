@@ -29,7 +29,6 @@ import android.util.SparseArray;
 
 import androidx.collection.LongSparseArray;
 
-import com.exteragram.messenger.boost.filter.ZalgoFilter;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.tgnet.ConnectionsManager;
@@ -2850,10 +2849,10 @@ public class ContactsController extends BaseController {
             return LocaleController.getString("HiddenName", R.string.HiddenName);
         }*/
         if (firstName != null) {
-            firstName = (String) ZalgoFilter.filterMessage(firstName.trim());
+            firstName = firstName.trim();
         }
         if (lastName != null) {
-            lastName = (String) ZalgoFilter.filterMessage(lastName.trim());
+            lastName = lastName.trim();
         }
         StringBuilder result = new StringBuilder((firstName != null ? firstName.length() : 0) + (lastName != null ? lastName.length() : 0) + 1);
         if (LocaleController.nameDisplayOrder == 1) {

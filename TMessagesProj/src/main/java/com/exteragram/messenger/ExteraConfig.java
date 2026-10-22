@@ -253,7 +253,7 @@ public class ExteraConfig {
             // Updates
             lastUpdateCheckTime = preferences.getLong("lastUpdateCheckTime", 0);
             updateScheduleTimestamp = preferences.getLong("updateScheduleTimestamp", 0);
-            checkUpdatesOnLaunch = preferences.getBoolean("checkUpdatesOnLaunch", true);
+            checkUpdatesOnLaunch = preferences.getBoolean("checkUpdatesOnLaunch", false);
 
             // Other
             channelToSave = preferences.getLong("channelToSave", 0);
